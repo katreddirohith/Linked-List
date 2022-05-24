@@ -1,0 +1,60 @@
+#include &lt;iostream&gt;
+using namespace std;
+struct Node {
+int data;
+struct Node* next;
+};
+void insertAtBeginning(struct Node** head_ref, int new_data) {
+struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+new_node-&gt;data = new_data;
+new_node-&gt;next = (*head_ref);
+(*head_ref) = new_node;
+}
+void insertAtEnd(struct Node** head_ref, int new_data) {
+struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+struct Node* last = *head_ref;
+new_node-&gt;data = new_data;
+new_node-&gt;next = NULL;
+if (*head_ref == NULL) {
+*head_ref = new_node;
+return;
+}
+while (last-&gt;next != NULL) last = last-&gt;next
+last-&gt;next = new_node;
+return;
+}
+void deleteNode(struct Node** head_ref, int key) {
+struct Node *temp = *head_ref, *prev;
+if (temp != NULL &amp;&amp; temp-&gt;data == key) {
+*head_ref = temp-&gt;next;
+
+free(temp);
+return;
+}
+
+while (temp != NULL &amp;&amp; temp-&gt;data != key) {
+prev = temp;
+temp = temp-&gt;next;
+}
+if (temp == NULL) return;
+prev-&gt;next = temp-&gt;next;
+free(temp);
+}
+void printList(struct Node* node) {
+while (node != NULL) {
+cout &lt;&lt; node-&gt;data &lt;&lt; &quot; &quot;;
+node = node-&gt;next;
+}
+}
+int main() {
+struct Node* head = NULL;
+insertAtEnd(&amp;head, 6);
+insertAtBeginning(&amp;head, 7);
+insertAtBeginning(&amp;head, 8);
+insertAtEnd(&amp;head, 9);
+cout &lt;&lt; &quot;Linked list: &quot;;
+printList(head);
+cout &lt;&lt; &quot;\nAfter deleting an element: &quot;;
+deleteNode(&amp;head, 7);
+printList(head);
+}
